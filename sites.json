@@ -14,7 +14,13 @@
       "job title": "work_experiences",
       "company": "work_experiences",
       "from": "work_experiences",
-      "to": "work_experiences"
+      "to": "work_experiences",
+      "school or university": "education",
+      "degree": "education",
+      "field of study": "education",
+      "overall result (gpa)": "education",
+      "education_from": "education",
+      "education_to": "education"
     }
   },
   "boards.greenhouse.io": {
