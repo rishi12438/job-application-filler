@@ -10,11 +10,7 @@
       "phone device type": "phoneType", 
       "phone extension": "extension", 
       "linkedin":"linkedin",
-      "country / territory":"location", 
-      "job title": "work_experiences",
-      "company": "work_experiences",
-      "from": "work_experiences",
-      "to": "work_experiences"
+      "country / territory":"location"
     }
   },
   "boards.greenhouse.io": {
