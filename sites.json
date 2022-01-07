@@ -1,4 +1,16 @@
 {
+  "workday": { 
+    "isComplex": false,
+    "selectorMapping": {
+      "country": "location" , 
+      "phone number": "phone", 
+      "full name": "fullName", 
+      "postal code": "postalCode",
+      "city": "city", 
+      "phone device type": "phoneType", 
+      "phone extension": "extension"
+    }
+  },
   "boards.greenhouse.io": {
     "isComplex": false,
     "selectorMapping": {
