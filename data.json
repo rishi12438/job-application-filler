@@ -3,7 +3,7 @@
   "lastName": "Doe",
   "fullName": "John Doe",
   "email": "johndoe@gmail.com",
-  "phone": "4089102345",
+  "phone": "95436543",
   "location": "singapore",
   "postalCode":"482002",
   "city": "Singapore",
@@ -29,6 +29,22 @@
   "employment_start_date_year": "",
   "employment_end_date_month": "",
   "employment_end_date_year": "",
+  "work_experiences": [
+    {
+      "job_title": "Software Engineer",
+      "company": "Tesla",
+      "summary": "i worked at tesla",
+      "start_date": "12-2021",
+      "end_date": "01-2022"
+    },
+    {
+      "job_title": "Data Engineer",
+      "company": "Amazon",
+      "summary": "i worked at amazon",
+      "start_date": "12-2020",
+      "end_date": "02-2021"
+    }
+  ],
   "gender": "Male",
   "hispanic_ethnicity": "No",
   "race": "Asian",
