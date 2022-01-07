@@ -160,17 +160,22 @@ async function fill_workday(){
     if(typeof input_div !== "undefined" && input_div.getElementsByTagName("button").length > 0){ 
       input_div.getElementsByTagName("button")[0].click()
       console.log(label_name,input_div)
-      document.getElementsByClassName('css-mq2y9k')[0].querySelector('[role="listbox"]')
-      options = document.getElementsByTagName('li')
-      i = 0 
-      while(i < options.length){
-        //if can match the option value to the value we are looking for
-        if(value_to_look_for != "" && typeof value_to_look_for !== "undefined" && options[i].innerText !== "undefined"  && value_to_look_for.toLowerCase() == options[i].innerText.toLowerCase()){ 
-          found = 1
-          options[i].click()
-        }        
-        //console.log(options[i].getAttribute('data-value'),options[i].innerText)
-        i++
+      try{
+        document.getElementsByClassName('css-mq2y9k')[0].querySelector('[role="listbox"]')
+      
+        options = document.getElementsByTagName('li')
+        i = 0 
+        while(i < options.length){
+          //if can match the option value to the value we are looking for
+          if(value_to_look_for != "" && typeof value_to_look_for !== "undefined" && options[i].innerText !== "undefined"  && value_to_look_for.toLowerCase() == options[i].innerText.toLowerCase()){ 
+            found = 1
+            options[i].click()
+          }        
+          //console.log(options[i].getAttribute('data-value'),options[i].innerText)
+          i++
+        }
+      }
+      catch(err){ 
       }
     }
     else{ 
@@ -183,6 +188,7 @@ async function fill_workday(){
       }
     }
   });
+
   //ensure all drop down info is updated 
   await sleep(2000)
   //console.log("called new",$("div[data-automation-id*='formField']") )
@@ -204,7 +210,6 @@ async function fill_workday(){
         $(input_div).find('input[type=text]').focus()
         $(input_div).find('input[type=text]').val(value_to_look_for).change();
         $(input_div).find('input[type=text]').focus()
-        //input_div.querySelector('input[type=text]').value = value_to_look_for
       }
     }
   });
