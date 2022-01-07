@@ -144,6 +144,12 @@ async function fill_workday(){
   }
   lastknown_title = document.getElementsByClassName("css-1j9bnzb")[0].innerText
 
+  //this section is for the experiences
+  console.log("work experiences", autofillData)
+  // $("div[data-automation-id*='Add Another'").each(function(i, el) {
+
+  // })
+
   //this section is for the dropdown 
   $("div[data-automation-id*='formField']").each(function (i, el) {
     var label_name  = el.children[0].innerText.replace("*","");

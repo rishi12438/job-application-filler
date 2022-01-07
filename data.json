@@ -29,6 +29,13 @@
   "employment_start_date_year": "",
   "employment_end_date_month": "",
   "employment_end_date_year": "",
+  "work_experiences": [
+    {
+      "job_title": "Software Engineer",
+      "company": "Tesla",
+      "summary": "i worked at tesla"
+    }
+  ],
   "gender": "Male",
   "hispanic_ethnicity": "No",
   "race": "Asian",
