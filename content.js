@@ -145,11 +145,18 @@ async function fill_workday(){
   lastknown_title = document.getElementsByClassName("css-1j9bnzb")[0].innerText
 
   //this section is for the experiences
-  console.log("work experiences", autofillData)
-  // $("div[data-automation-id*='Add Another'").each(function(i, el) {
+  console.log("work experiences", autofillData.work_experiences)
+  $("div[data-automation-id*='workExperienceSection']").each(function(i,el) {
+    var label_name = el.children[0].innerText.replace("*","")
+    var input_div = el.children[1]
 
-  // })
-
+    autofillData.work_experiences.forEach((work_experience) => {
+      if (input_div.getElementsByTagName("button")[0].getAttribute("data-automation-id") != "panel-set-delete-button") {
+        input_div.getElementsByTagName("button")[0].click()
+      }
+    })
+  })
+  
   //this section is for the dropdown 
   $("div[data-automation-id*='formField']").each(function (i, el) {
     var label_name  = el.children[0].innerText.replace("*","");
@@ -199,6 +206,10 @@ async function fill_workday(){
   await sleep(2000)
   //console.log("called new",$("div[data-automation-id*='formField']") )
   //this section is for the normal text input --> I have done it like this because when you do drop down more fields might be added
+  var work_exp_count = {
+    job_title:  0,
+    company: 0
+  }
   $("div[data-automation-id*='formField']").each(function (i, el) {
     
     var label_name  = el.children[0].innerText.replace("*","");
@@ -210,12 +221,20 @@ async function fill_workday(){
     console.log(label_name,to_search,value_to_look_for)
     if(typeof to_search !== "undefined"){ 
         value_to_look_for = autofillData[to_search]
+
+        if (label_name.toLowerCase() === "job title") {
+          value_to_look_for = autofillData[to_search][work_exp_count.job_title]["job_title"]
+          work_exp_count.job_title += 1
+        }
+        else if (label_name.toLowerCase() === "company") {
+          value_to_look_for = autofillData[to_search][work_exp_count.company]["company"]
+          work_exp_count.company += 1
+        }
     }
     if(typeof input_div !== "undefined" && input_div.querySelectorAll('input[type=text]').length > 0 ){ 
       if(value_to_look_for != "" && typeof value_to_look_for !== "undefined"){ 
         $(input_div).find('input[type=text]').focus()
         $(input_div).find('input[type=text]').val(value_to_look_for).change();
-        $(input_div).find('input[type=text]').focus()
       }
     }
   });

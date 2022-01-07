@@ -3,7 +3,7 @@
   "lastName": "Doe",
   "fullName": "John Doe",
   "email": "johndoe@gmail.com",
-  "phone": "4089102345",
+  "phone": "95436543",
   "location": "singapore",
   "postalCode":"482002",
   "city": "Singapore",
@@ -33,7 +33,16 @@
     {
       "job_title": "Software Engineer",
       "company": "Tesla",
-      "summary": "i worked at tesla"
+      "summary": "i worked at tesla",
+      "start_date": "",
+      "end_date": ""
+    },
+    {
+      "job_title": "Data Engineer",
+      "company": "Amazon",
+      "summary": "i worked at amazon",
+      "start_date": "",
+      "end_date": ""
     }
   ],
   "gender": "Male",
