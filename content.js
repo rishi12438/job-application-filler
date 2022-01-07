@@ -2,7 +2,10 @@ const AUTOFILL_DATA_FILE = chrome.runtime.getURL('data.json');
 const SITES_SELECTOR_MAPPING_FILE = chrome.runtime.getURL('sites.json');
 
 let autofillData = {};
+let done_next = 0 
+let done_previous = 0
 let sitesData = {};
+let lastknown_title = ""; 
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -125,29 +128,47 @@ function autofillInput(selector, inputData, inputElement) {
 
 async function fill_workday(){ 
   cannot_find = true 
+  console.log("fill workday called")
   while(cannot_find){ 
     console.log('All assets are loaded')  
     if($("div[data-automation-id*='formField']").length > 0 ) {
       cannot_find = false; 
-      //It'll be an array of elements
+      //It'll be an array of elements 
     }
     await sleep(2000)
   }
+  if(document.getElementsByClassName("css-1j9bnzb")[0].innerText == lastknown_title){
+      return 
+  }
+  lastknown_title = document.getElementsByClassName("css-1j9bnzb")[0].innerText
+ 
   $("div[data-automation-id*='formField']").each(function (i, el) {
-    console.log(el.children[0]) 
-    //It'll be an array of elements
+    console.log(el.children[0].innerText) 
   });
+
+  if(done_next == 0){ 
+    try{
+      document.getElementsByClassName('css-1r8ofxn')[0].addEventListener("click", function(){ 
+          console.log('next pressed')  
+          fill_workday()        
+          done_previous = 1
+      });
+    }  
+    catch(err){ 
+    }
+
+  }
+  if(done_previous == 0 ){ 
+    try{
+      document.getElementsByClassName('css-1coxel6')[0].addEventListener("click", function(){ 
+          console.log("prev pressed")
+          fill_workday()
+          done_previous = 1
+      });
+
+    }  
+    catch(err){ 
+    }
+  }
 }
-/*
-function start() {
-
-  setTimeout(function() {
-      console.log('Hello My Infinite Loop Execution');
-
-    // Again
-    start();
-
-    // Every 3 sec
-  }, 3000);
-}*/
 
