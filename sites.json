@@ -13,6 +13,8 @@
       "country / territory":"location", 
       "job title": "work_experiences",
       "company": "work_experiences",
+      "location": "work_experiences",
+      "role description": "work_experiences",
       "from": "work_experiences",
       "to": "work_experiences",
       "school or university": "education",

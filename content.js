@@ -257,6 +257,8 @@ async function fill_workday(save){
   var work_exp_count = {
     job_title:  0,
     company: 0,
+    location: 0,
+    summary: 0,
     from: 0,
     to: 0
   }
@@ -286,13 +288,20 @@ async function fill_workday(save){
           switch(label_name.toLowerCase() ) {
             case "job title":
               value_to_look_for = autofillData[to_search][work_exp_count.job_title]["job_title"]
-              console.log('job title',value_to_look_for)
               work_exp_count.job_title += 1  
               break
             case "company":
               value_to_look_for = autofillData[to_search][work_exp_count.company]["company"]
-              console.log(value_to_look_for)
               work_exp_count.company += 1
+              break
+            case "location":
+              value_to_look_for = autofillData[to_search][work_exp_count.location]["location"]
+              work_exp_count.location += 1
+              break
+            case "role description":
+              value_to_look_for = autofillData[to_search][work_exp_count.summary]["summary"]
+              document.querySelectorAll('[data-automation-id="description"]')[work_exp_count.summary].value = value_to_look_for
+              work_exp_count.summary += 1
               break
           }
           if(value_to_look_for != "" && typeof value_to_look_for !== "undefined"){ 
