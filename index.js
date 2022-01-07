@@ -5,3 +5,8 @@ function init() {
     document.querySelector("#dragparent1"),
   ]);
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  var splide = new Splide(".splide");
+  splide.mount();
+});
