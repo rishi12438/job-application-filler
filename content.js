@@ -159,6 +159,7 @@ async function fill_workday(){
     //if button is present, means we have a dropdown 
     if(typeof input_div !== "undefined" && input_div.getElementsByTagName("button").length > 0){ 
       input_div.getElementsByTagName("button")[0].click()
+      console.log(label_name,input_div)
       document.getElementsByClassName('css-mq2y9k')[0].querySelector('[role="listbox"]')
       options = document.getElementsByTagName('li')
       i = 0 
@@ -200,8 +201,10 @@ async function fill_workday(){
     }
     if(typeof input_div !== "undefined" && input_div.querySelectorAll('input[type=text]').length > 0 ){ 
       if(value_to_look_for != "" && typeof value_to_look_for !== "undefined"){ 
-        input_div.querySelector('input[type=text]').value = value_to_look_for
-        input_div.querySelector('input[type=text]').innerText = value_to_look_for
+        $(input_div).find('input[type=text]').focus()
+        $(input_div).find('input[type=text]').val(value_to_look_for).change();
+        $(input_div).find('input[type=text]').focus()
+        //input_div.querySelector('input[type=text]').value = value_to_look_for
       }
     }
   });
