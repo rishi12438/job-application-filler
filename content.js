@@ -383,7 +383,7 @@ async function fill_workday(save){
       }
     }
     await sleep(1000)
-    $("div[data-automation-id*='formField']").each(function (i, el) {
+    $("div[data-automation-id*='formField']").each(async function (i, el) {
       var label_name  = el.children[0].innerText.replace("*","");
       label_name = label_name.toLowerCase()
       //this is the second div that contains the input 
@@ -400,7 +400,7 @@ async function fill_workday(save){
               value_to_look_for = autofillData[to_search][education_count.school]["school"]
               $(input_div).find('input[type=text]').focus()
               $(input_div).find('input[type=text]').val(value_to_look_for).change();
-              work_exp_count.job_title += 1  
+              education_count.school += 1  
               break
             case "degree":
               value_to_look_for = autofillData[to_search][education_count.degree]["degree"]
@@ -421,12 +421,8 @@ async function fill_workday(save){
                   j++
                 }
                 options = z.getElementsByTagName('li')
-                console.log('options',options)
                 i = 0           
                 while(i < options.length){
-                  //console.log("looking for",options[i].getAttribute('data-value'),options[i].innerText)
-                  //if can match the option value to the value we are looking for
-                  console.log('inner',options[i].innerText)
                   if(value_to_look_for != "" && typeof value_to_look_for !== "undefined" && options[i].innerText !== "undefined"  && options[i].innerText.toLowerCase().includes(value_to_look_for.toLowerCase())){ 
                     found = 1
                     options[i].click()
@@ -447,12 +443,28 @@ async function fill_workday(save){
                   input_div.getElementsByTagName("button")[0].click()
                 }
               }
+              education_count.degree += 1
               break
+            // case "field of study":
+            //   value_to_look_for = autofillData[to_search][education_count.major]["major"]
+            //   document.querySelectorAll('[data-automation-id="multiselectInputContainer"]')[education_count.major].focus()
+            //   document.querySelectorAll('[data-automation-id="multiselectInputContainer"]')[education_count.major].click()
+            //   await sleep(1000)
+            //   const prompts = document.querySelectorAll('[data-automation-id="promptOption"]')
+            //   for (var a = 0; a < prompts.length; a++) {
+            //     if (prompts[a].innerText.toLowerCase() === value_to_look_for.toLowerCase()) {
+            //       prompts[a].focus()
+            //       prompts[a].click()
+            //       break
+            //     }
+            //   }
+            //   education_count.major += 1  
+            //   break
             case "overall result (gpa)":
               value_to_look_for = autofillData[to_search][education_count.gpa]["gpa"]
               $(input_div).find('input[type=text]').focus()
               $(input_div).find('input[type=text]').val(value_to_look_for).change();
-              work_exp_count.gpa += 1
+              education_count.gpa += 1
               break
           }
           // if(value_to_look_for != "" && typeof value_to_look_for !== "undefined"){ 
