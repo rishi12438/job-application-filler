@@ -10,7 +10,9 @@
       "phone device type": "phoneType", 
       "phone extension": "extension",
       "job title": "work_experiences",
-      "company": "work_experiences"
+      "company": "work_experiences",
+      "from": "work_experiences",
+      "to": "work_experiences"
     }
   },
   "boards.greenhouse.io": {

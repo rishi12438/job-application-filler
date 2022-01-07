@@ -240,8 +240,53 @@ async function fill_workday(){
         $(input_div).find('input[type=text]').focus()
         $(input_div).find('input[type=text]').val(value_to_look_for).change();
       }
-    }
+    }   
   });
+
+  // check if work experiences are already created
+  if (Array.from(document.querySelectorAll('div')).find(el => el.textContent === 'MM')) {
+    $("div[data-automation-id*='formField']").each(function (i, el) {
+      var label_name  = el.children[0].innerText.replace("*","");
+      //this is the second div that contains the input 
+      var input_div = el.children[1]    
+
+      var to_search = sitesData["workday"]["selectorMapping"][label_name.toLowerCase()]
+
+      if (typeof to_search !== "undefined") {
+        // fill up the dates
+        for (var i = 0; i < autofillData.work_experiences.length;  i++ ) {
+          const calendar_icon = document.querySelectorAll('[data-automation-id="dateIcon"]')
+          console.log('calendar', calendar_icon)
+          if (calendar_icon.length) {
+            // from
+            calendar_icon[i*2].children[0].click()
+            console.log('from')
+            const start_date = autofillData[to_search][work_exp_count.from]["start_date"].split("-")
+            // click year as many times as current-specified
+            for (var j = 0; j < new Date().getFullYear() - start_date[1]; j++) {
+              document.querySelectorAll('[data-automation-id="monthPickerLeftSpinner"]')[0].click()
+            }
+            // do same for month
+            document.querySelectorAll('[data-automation-id="monthPickerTile"]')[parseInt(start_date[0])-1].click()
+            
+            // to
+            calendar_icon[i*2+1].children[0].click()
+            console.log('to')
+            const end_date = autofillData[to_search][work_exp_count.from]["end_date"].split("-")
+            // click year as many times as current-specified
+            for (var j = 0; j < new Date().getFullYear() - end_date[1]; j++) {
+              document.querySelectorAll('[data-automation-id="monthPickerLeftSpinner"]')[0].click()
+            }
+            // do same for month
+            document.querySelectorAll('[data-automation-id="monthPickerTile"]')[parseInt(end_date[0])-1].click()
+            work_exp_count.from += 1
+            work_exp_count.to += 1
+          }
+        }
+      }
+    })
+  }
+  
 
   if(done_next == 0){ 
     try{
