@@ -1,6 +1,7 @@
 <html> 
 <script src="jquery.js"></script>
 <script src = "jquery-ui.js"></script>
+<head>
 <style> 
 
 * {
@@ -69,27 +70,29 @@
 }
 .insidePopup{border: 2px solid #0ff; }
 </style>
+<link href="nodemodules/dragula/dist/dragula.min.css" rel="stylesheet" />
+<script src="nodemodules/dragula/dist/dragula.min.js"></script>
+</head>
 <div id="containers">
   <div class="frame">
-  Frame
-      <div class="popup">
-      <h1>
-       Personal info
-      </h1>
-      <div class="object">O 1</div>
-      <div class="object">O 2</div>
-        <div class="object">O 3</div>
-      </div>
-    <div class="popup">
-      <h1>
-       Work Experience
-      </h1>
-      <div class="object">O 1</div>
-      <div class="object">O 2</div>
-      </div>
+  Enter Your Details
+  <div class="wrapper">
+    <div id="left" class="container">
+      <div>Item 1.</div>
+      <div>Item 2.</div>
+      <div>Item 3.</div>
+      <div>Item 4.</div>
+    </div>
+    <div id="right" class="container">
+      <div>Item 5.</div>
+      <div>Item 6.</div>
+      <div>Item 7.</div>
+    </div>
+  </div>
    
   </div>
 </div>
+
 </html>
 <script>
 
@@ -123,4 +126,56 @@ $('#containers .frame .object').draggable({
   helper: 'clone',
   containment: "document"
 });
+var drake = dragula([document.querySelector('#left'), document.querySelector('#right')],{
+
+// or 'horizontal'
+direction: 'vertical',
+
+// determine whether to copy elements rather than moving
+// if a method is passed, it'll be called whenever an element starts being dragged in order to decide whether it should follow copy behavior or not. 
+copy: false, 
+
+// determine whether to sort elements in copy-source containers.
+copySortSource: false,
+
+// spilling will put the element back where it was dragged from, if this is true
+revertOnSpill: false,
+
+// spilling will `.remove` the element, if this is true
+removeOnSpill: false,
+
+// set the element that gets mirror elements appended
+mirrorContainer: document.body, 
+
+// allows users to select input text
+ignoreInputTextSelection: true,
+
+// allows users to select the amount of movement on the X axis before it is considered a drag instead of a click   
+slideFactorX: 0,   
+
+// allows users to select the amount of movement on the Y axis before it is considered a drag instead of a click      
+slideFactorY: 0,
+
+// only elements in drake.containers will be taken into account
+isContainer: function (el) {
+  return false; 
+},
+
+// elements are always draggable by default
+moves: function (el, source, handle, sibling) {
+  return true; 
+},
+
+// elements can be dropped in any of the `containers` by default
+accepts: function (el, target, source, sibling) {
+  return true; 
+},
+
+// don't prevent any drags from initiating by default
+invalid: function (el, handle) {
+  return false; 
+}
+
+});
+drake.containers.push(container)
 </script>
