@@ -1,0 +1,69 @@
+{
+  "boards.greenhouse.io": {
+    "isComplex": false,
+    "selectorMapping": {
+      "[name='job_application[first_name]']": "firstName",
+      "[name='job_application[last_name]']": "lastName",
+      "[name='job_application[email]']": "email",
+      "[name='job_application[phone]']": "phone",
+      "[name='job_application[location]']": "location",
+      "[name='job_application[cover_letter_text]']":  "cover_letter",
+      "[autocomplete='custom-question-linkedin-profile']": "linkedin",
+      "[autocomplete='custom-question-linkedin-profile-optional']": "linkedin",
+      "[autocomplete='custom-question-will-you-now-or-in-the-future-require-visa-transfer-or-sponsorship-if-yes-please-share-more-details-on-the-kind-of-visa-you-have-when-it-expires-and-any-other-details-you-think-would-be-good-for-us-to-know'":"visa_reason",
+      "[autocomplete='custom-question-website']": "website",
+      "[autocomplete='custom-question-what-is-your-current-location']": "current_location",
+      "[autocomplete='custom-question-when-can-you-start-a-new-job']":"job_starting",
+      "[autocomplete='custom-question-personal-website-or-blog-optional']": "website",
+      "[name='job_application[educations][][school_name_id]']": "school",
+      "[name='job_application[educations][][degree_id]']": "degree",
+      "[name='job_application[educations][][discipline_id]']": "discipline",
+      "[name='job_application[educations][][start_date][month]']": "education_start_date_month",
+      "[name='job_application[educations][][start_date][year]']": "education_start_date_year",
+      "[name='job_application[educations][][end_date][month]']": "education_end_date_month",
+      "[name='job_application[educations][][end_date][year]']": "education_end_date_year",
+      "[name='job_application[employments][][company_name]']": "company_name",
+      "[name='job_application[employments][][title]']": "employment_title",
+      "[name='job_application[employments][][start_date][month]']": "employment_start_date_month",
+      "[name='job_application[employments][][start_date][year]']": "employment_start_date_year",
+      "[name='job_application[employments][][end_date][month]']": "employment_end_date_month",
+      "[name='job_application[employments][][end_date][year]']": "employment_end_date_year",
+      "[name='job_application[gender]']": "gender",
+      "[name='job_application[hispanic_ethnicity]']": "hispanic_ethnicity",
+      "[name='job_application[race]']": "race",
+      "[name='job_application[veteran_status]']": "veteran_status",
+      "[name='job_application[disability_status]']": "disability_status",
+      "[name='job_application[answers_attributes][1][boolean_value]']": "authorised_to_work"
+    }
+  },
+  "jobs.lever.co": {
+    "isComplex": false,
+    "selectorMapping": {
+      "[name='name']": "fullName",
+      "[name='email']": "email",
+      "[name='phone']": "phone",
+      "[name='org']": "currentCompany",
+      "[name='urls[LinkedIn]']": "linkedin",
+      "[name='urls[LinkedIn Profile]']": "linkedin",
+      "[name='urls[GitHub]']": "github",
+      "[name='urls[GitHub (if applicable)]']": "github",
+      "[name='urls[Personal Website]']": "website",
+      "[name='urls[Portfolio]']": "website",
+      "[name='urls[Portfolio (if applicable)]']": "website",
+      "[name='urls[Other]']": "blog",
+      "[name='urls[Twitter]']": "twitter"
+    }
+  },
+  "www.uber.com": {
+    "isComplex": false,
+    "selectorMapping": {
+      "[placeholder='First Name']": "firstName",
+      "[placeholder='Last Name']": "lastName",
+      "[placeholder='Phone Number']": "phone",
+      "[placeholder='Email']": "email",
+      "[placeholder='LinkedIn URL']": "linkedin",
+      "[placeholder='Github URL']": "github",
+      "[placeholder='Other URL']": "blog"
+    }
+  }
+}

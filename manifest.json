@@ -1,25 +1,36 @@
 {
-  "name": "Job app filler ",
+  "name": "job-autofiller",
   "version": "0.1",
-  "description": "A job app filler",
-  "background": {
-    "page": "background.html",
-    "persistent": false
-  },
-  "browser_action": {
-    "default_popup": "popup2.html"
-  },
-  "content_scripts": [
-    {
-      "matches": [ "http://*/*", "https://*/*", "file://*/*" ],
-      "all_frames": true,
-      "js": ["app.js","jquery.js","jquery-ui.js"],
-      "css":["content.css"],
-      "run_at": "document_end"
-    }
+  "description": "Autofill personal information on job applications",
+  "homepage_url": "https://github.com/lovincyrus/job-autofiller",
+	"icons": { 
+		"16": "icon16.png",
+		"48": "icon48.png",
+		"128": "icon128.png" 
+	},
+  "permissions": [
+    "activeTab",
+    "declarativeContent",
+    "storage"
   ],
+  "content_scripts": [
+		{
+      "matches": [ "http://*/*", "https://*/*", "file://*/*" ],
+      "js": [
+        "content.js",
+        "jquery-3.3.1.slim.min.js"
+      ],"run_at": "document_end"
+		}
+  ],
+  "background": {
+    "scripts": [
+      "jquery-3.3.1.slim.min.js"
+    ]
+  },
+  "options_page": "options.html",
   "manifest_version": 2,
-  "web_accessible_resources": ["img/0.jpeg"]
-    ,
-  "content_security_policy": "script-src 'self' https://www.gstatic.com/ https://*.firebaseio.com https://www.googleapis.com 'sha256-p5Qu8LTVrgxFnVPkA9HOlRGZ9NNhM6/fyu5PNmPm0dw='; object-src 'self'"
+  "web_accessible_resources": [
+    "data.json",
+    "sites.json"
+  ]
 }
