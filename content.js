@@ -6,11 +6,24 @@ let done_next = 0
 let done_previous = 0
 let sitesData = {};
 let lastknown_title = ""; 
+let current_page_value_map = {}
+var actual_next_button;
+var actual_prev_button;
+var fake_next_button;
+var fake_prev_button; 
+
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+const readLocalStorage = async () => {
+  return new Promise((resolve, reject) => {
+    chrome.storage.local.get(null, function (result) {
+      resolve(result)
+    });
+  });
+}; 
 
 /**
  * Import the data.json file
@@ -22,6 +35,7 @@ const dataStream = fetch(AUTOFILL_DATA_FILE)
 /**
  * Import the sites.json file
  */
+
 const sitesStream = fetch(SITES_SELECTOR_MAPPING_FILE)
   .then(response => response.json())
   .catch(e => console.log(`failed to read sites.json: ${e}`));
@@ -31,10 +45,13 @@ const sitesStream = fetch(SITES_SELECTOR_MAPPING_FILE)
  */
 Promise.all([
   dataStream,
-  sitesStream
+  sitesStream, 
+  readLocalStorage(),
 ]).then(responses => {
   autofillData = responses[0];
   sitesData = responses[1];
+  current_page_value_map= responses[2]
+  console.log("ffkkk",current_page_value_map)
   init();
 })
 
@@ -78,7 +95,7 @@ function init() {
     return;
   }
   if(siteName == "workday"){ 
-    fill_workday()
+    fill_workday(0)
     return;
   }
   if (_isComplex(siteName)) {
@@ -126,112 +143,239 @@ function autofillInput(selector, inputData, inputElement) {
   });
 }
 
-async function fill_workday(){ 
-  cannot_find = true 
-  console.log("fill workday called")
-  while(cannot_find){ 
-    console.log('All assets are loaded')  
-    if($("div[data-automation-id*='formField']").length > 0 ) {
-      cannot_find = false; 
-      //It'll be an array of elements 
+function add_event_listener_for_next_prev_workday(){ 
+  
+  if(done_previous == 0){ 
+
+    try{
+      if(document.querySelectorAll('button[data-automation-id="bottom-navigation-back-button"]').length > 0 ){ 
+        actual_prev_button = document.querySelectorAll('button[data-automation-id="bottom-navigation-back-button"]')[0]
+        fake_prev_button = actual_prev_button.cloneNode(true)
+        actual_prev_button.style.display = "none"; 
+        actual_prev_button.parentNode.insertBefore(fake_prev_button,actual_prev_button)
+        
+
+        fake_prev_button.addEventListener("click", function(){ 
+          console.log('prev pressed')  
+          fill_workday(2)        
+        });
+      done_previous = 1    
+      }  
+    }  
+    catch(err){ 
+
     }
-    await sleep(2000)
+  }
+
+  if(done_next == 0 ){ 
+    try{
+      
+      if(document.querySelectorAll('button[data-automation-id="bottom-navigation-next-button"]').length > 0 ){  
+        actual_next_button = document.querySelectorAll('button[data-automation-id="bottom-navigation-next-button"]')[0]
+        fake_next_button =  actual_next_button.cloneNode(true) //document.createElement("button");
+        actual_next_button.style.display = "none"; 
+        actual_next_button.parentNode.insertBefore(fake_next_button,actual_next_button)
+        
+
+        fake_next_button.addEventListener("click", function(){ 
+            console.log("next pressed")
+            fill_workday(1)
+        });
+        console.log("added next button event listner");
+        done_next = 1
+      }
+    }  
+    catch(err){ 
+      console.log("err",err)
+    }
+  }
+}
+async function fill_workday(save){ 
+  if(save == 1 || save == 2){ 
+    console.log("saving whatever possible")
+    $("div[data-automation-id*='formField']").each(function (i, el) {
+
+      var label_name  = el.children[0].innerText.replace("*","");
+      label_name = label_name.toLowerCase()
+      //this is the second div that contains the input 
+      var input_div = el.children[1]    
+      var to_search = sitesData["workday"]["selectorMapping"][label_name.toLowerCase()]
+      
+      if(typeof input_div !== "undefined" && input_div.getElementsByTagName("button").length > 0){ 
+        btn_to_search = input_div.getElementsByTagName("button")[0]
+        value_for_button = btn_to_search.innerText
+        console.log("correct values for ", label_name, "are ",btn_to_search.getAttribute('value') , value_for_button)
+        chrome.storage.local.set({[label_name] :  value_for_button }, function () {
+          console.log("saving",label_name,value_for_button)
+          current_page_value_map[label_name] =  value_for_button
+        });
+      }
+      else if(typeof input_div !== "undefined" && input_div.querySelectorAll('input[type=text]').length > 0 ){ 
+        input_to_search = input_div.querySelectorAll('input[type=text]')[0]
+        console.log("correct values for ", label_name, "are ",input_to_search.getAttribute('value') )
+        chrome.storage.local.set({[label_name] :  input_to_search.getAttribute('value') }, function () {
+          current_page_value_map[label_name] =  input_to_search.getAttribute('value') 
+        });
+      }
+    })
+
+    if(save == 1){ 
+      
+      actual_next_button.click()
+    }     
+    
+    else{ 
+      actual_prev_button.click()
+    }
+
+    await sleep(3000)
+    console.log("finished sleeping")
   }
   
 
-  if(document.getElementsByClassName("css-1j9bnzb")[0].innerText == lastknown_title){
-      return 
+  cannot_find = true 
+  console.log("fill workday called",lastknown_title)
+  while(cannot_find){ 
+    console.log('All assets are loaded')  
+    
+    if(document.getElementsByClassName("css-1j9bnzb").length > 0  && document.querySelectorAll("div[data-automation-id*='formField']").length > 0 ) {
+      cannot_find = false; 
+    }
+    await sleep(2000)
   }
-  lastknown_title = document.getElementsByClassName("css-1j9bnzb")[0].innerText
 
+  add_event_listener_for_next_prev_workday()
+
+  
+  
+  //exit if same page is seen again 
+  //if(document.getElementsByClassName("css-1j9bnzb")[0].innerText == lastknown_title){
+    
+  //  return 
+  //  }
+  
+  lastknown_title = document.getElementsByClassName("css-1j9bnzb")[0].innerText
+  changed = false 
   //this section is for the dropdown 
   $("div[data-automation-id*='formField']").each(function (i, el) {
     var label_name  = el.children[0].innerText.replace("*","");
-    //this is the second div that contains the input 
-    var input_div = el.children[1]    
-    var to_search = sitesData["workday"]["selectorMapping"][label_name.toLowerCase()]
-    var value_to_look_for = ""
-    if(typeof to_search !== "undefined"){ 
-        value_to_look_for = autofillData[to_search]
-    }
-
-    found = 0 
-    //if button is present, means we have a dropdown 
-    if(typeof input_div !== "undefined" && input_div.getElementsByTagName("button").length > 0){ 
-      input_div.getElementsByTagName("button")[0].click()
-      console.log(label_name,input_div)
-      document.getElementsByClassName('css-mq2y9k')[0].querySelector('[role="listbox"]')
-      options = document.getElementsByTagName('li')
-      i = 0 
-      while(i < options.length){
-        //if can match the option value to the value we are looking for
-        if(value_to_look_for != "" && typeof value_to_look_for !== "undefined" && options[i].innerText !== "undefined"  && value_to_look_for.toLowerCase() == options[i].innerText.toLowerCase()){ 
-          found = 1
-          options[i].click()
-        }        
-        //console.log(options[i].getAttribute('data-value'),options[i].innerText)
-        i++
+      label_name = label_name.toLowerCase()
+      //this is the second div that contains the input 
+      var input_div = el.children[1]    
+      var to_search = sitesData["workday"]["selectorMapping"][label_name.toLowerCase()]
+      var value_to_look_for = ""
+      if(typeof to_search !== "undefined"){ 
+          value_to_look_for = autofillData[to_search]
       }
-    }
-    else{ 
+      if( typeof current_page_value_map[label_name] !== "undefined" && current_page_value_map[label_name] != "" ){ 
+        value_to_look_for = current_page_value_map[label_name]
+      }
 
-    }
-    //close the dropdown 
-    if(found == 0){ 
-      if(typeof input_div !== "undefined" && input_div.getElementsByTagName("button").length > 0){ 
+      found = -1       
+      //if button is present, means we have a dropdown 
+      console.log("trying to check", label_name)
+
+      if(typeof input_div !== "undefined" && input_div.querySelectorAll('button').length > 0 && input_div.getElementsByTagName("button")[0].innerText.toLowerCase() != value_to_look_for.toLowerCase()   ){ 
+        if(found == -1){ 
+          found = 0
+        }
         input_div.getElementsByTagName("button")[0].click()
+        console.log("looking for ", label_name)
+        try{
+          z_s = document.querySelectorAll('ul')
+          j = 0 
+          var z 
+          found_z = 0 
+          while(j<z_s.length){ 
+            if(z_s[j].parentNode.hasAttribute('visibility') &&  z_s[j].getAttribute('role') == "listbox"){ 
+              z = z_s[j]
+              found_z = 1
+            }
+            j++
+          }
+          options = z.getElementsByTagName('li')
+          i = 0           
+          while(i < options.length){
+            //console.log("looking for",options[i].getAttribute('data-value'),options[i].innerText)
+            //if can match the option value to the value we are looking for
+
+            if(value_to_look_for != "" && typeof value_to_look_for !== "undefined" && options[i].innerText !== "undefined"  && value_to_look_for.toLowerCase() == options[i].innerText.toLowerCase()){ 
+              found = 1
+              options[i].click()
+              changed = true
+              break;
+            }        
+            //console.log(options[i].getAttribute('data-value'),options[i].innerText)
+            i++
+          }
+        }
+        catch(err){ 
+          console.log("errorrr*OFOFOFOFOFO",err)
+        }
       }
-    }
+      //close the dropdown 
+      if(found == 0){ 
+        if(typeof input_div !== "undefined" && input_div.querySelectorAll('button').length  > 0 && input_div.querySelectorAll('button')[0].hasAttribute('aria-expanded')){ 
+          console.log("closing", input_div.querySelectorAll('button')[0])
+          input_div.getElementsByTagName("button")[0].click()
+        }
+      }
+ 
+
+    
   });
-  //ensure all drop down info is updated 
-  await sleep(2000)
-  //console.log("called new",$("div[data-automation-id*='formField']") )
+  if(changed){ 
+    //ensure all drop down info is updated 
+    await sleep(2000)
+    console.log("sleeping")
+  }
+   //console.log("called new",$("div[data-automation-id*='formField']") )
   //this section is for the normal text input --> I have done it like this because when you do drop down more fields might be added
   $("div[data-automation-id*='formField']").each(function (i, el) {
-    
     var label_name  = el.children[0].innerText.replace("*","");
+    label_name = label_name.toLowerCase()
     //this is the second div that contains the input 
     var input_div = el.children[1]    
 
     var to_search = sitesData["workday"]["selectorMapping"][label_name.toLowerCase()]
     var value_to_look_for = ""
-    console.log(label_name,to_search,value_to_look_for)
-    if(typeof to_search !== "undefined"){ 
+    
+    if(typeof to_search !== "undefined" ){ 
         value_to_look_for = autofillData[to_search]
     }
-    if(typeof input_div !== "undefined" && input_div.querySelectorAll('input[type=text]').length > 0 ){ 
-      if(value_to_look_for != "" && typeof value_to_look_for !== "undefined"){ 
-        $(input_div).find('input[type=text]').focus()
-        $(input_div).find('input[type=text]').val(value_to_look_for).change();
-        $(input_div).find('input[type=text]').focus()
-        //input_div.querySelector('input[type=text]').value = value_to_look_for
+    if(typeof input_div !== "undefined" && input_div.querySelectorAll('input[type=text]').length > 0 && input_div.querySelectorAll('button').length  == 0 ){ 
+        if( typeof current_page_value_map[label_name] !== "undefined" && current_page_value_map[label_name]  != "" ){ 
+          
+          value_to_look_for = current_page_value_map[label_name]
+        }
+        console.log(label_name,to_search,value_to_look_for)
+      
+        if(value_to_look_for != "" && typeof value_to_look_for !== "undefined"){ 
+          $(input_div).find('input[type=text]').focus()
+          $(input_div).find('input[type=text]').val(value_to_look_for).change();
+          //$(input_div).find('input[type=text]').focus()
+        }
+    }
+    if(typeof input_div !== "undefined" && input_div.getElementsByTagName('textarea').length > 0 && input_div.querySelectorAll('button').length  == 0 ){ 
+      if( typeof current_page_value_map[label_name] !== "undefined"){ 
+        
+        value_to_look_for = current_page_value_map[label_name]
       }
-    }
+      console.log(label_name,to_search,value_to_look_for)
+    
+      if(value_to_look_for != "" && typeof value_to_look_for !== "undefined"){ 
+        $(input_div).find('textarea').focus()
+        $(input_div).find('textarea').val(value_to_look_for).change();
+        //$(input_div).find('input[type=text]').focus()
+      }
+  }
+
   });
-
-  if(done_next == 0){ 
-    try{
-      document.getElementsByClassName('css-1r8ofxn')[0].addEventListener("click", function(){ 
-          console.log('next pressed')  
-          fill_workday()        
-          done_previous = 1
-      });
-    }  
-    catch(err){ 
-    }
-
+  if(changed && save != -1){ 
+    //ensure all drop down info is updated 
+    fill_workday(-1)
   }
-  if(done_previous == 0 ){ 
-    try{
-      document.getElementsByClassName('css-1coxel6')[0].addEventListener("click", function(){ 
-          console.log("prev pressed")
-          fill_workday()
-          done_previous = 1
-      });
+  
 
-    }  
-    catch(err){ 
-    }
-  }
 }
 
