@@ -208,7 +208,9 @@ async function fill_workday(){
   //this section is for the normal text input --> I have done it like this because when you do drop down more fields might be added
   var work_exp_count = {
     job_title:  0,
-    company: 0
+    company: 0,
+    from: 0,
+    to: 0
   }
   $("div[data-automation-id*='formField']").each(function (i, el) {
     
@@ -222,15 +224,17 @@ async function fill_workday(){
     if(typeof to_search !== "undefined"){ 
         value_to_look_for = autofillData[to_search]
 
-        if (label_name.toLowerCase() === "job title") {
-          value_to_look_for = autofillData[to_search][work_exp_count.job_title]["job_title"]
-          work_exp_count.job_title += 1
+        switch(label_name.toLowerCase() ) {
+          case "job title":
+            value_to_look_for = autofillData[to_search][work_exp_count.job_title]["job_title"]
+            work_exp_count.job_title += 1  
+            break
+          case "company":
+            value_to_look_for = autofillData[to_search][work_exp_count.company]["company"]
+            work_exp_count.company += 1
+            break
         }
-        else if (label_name.toLowerCase() === "company") {
-          value_to_look_for = autofillData[to_search][work_exp_count.company]["company"]
-          work_exp_count.company += 1
-        }
-    }
+     }
     if(typeof input_div !== "undefined" && input_div.querySelectorAll('input[type=text]').length > 0 ){ 
       if(value_to_look_for != "" && typeof value_to_look_for !== "undefined"){ 
         $(input_div).find('input[type=text]').focus()
