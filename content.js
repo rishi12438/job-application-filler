@@ -143,17 +143,18 @@ async function fill_workday(){
       return 
   }
   lastknown_title = document.getElementsByClassName("css-1j9bnzb")[0].innerText
+
   //this section is for the dropdown 
   $("div[data-automation-id*='formField']").each(function (i, el) {
     var label_name  = el.children[0].innerText.replace("*","");
     //this is the second div that contains the input 
     var input_div = el.children[1]    
-
     var to_search = sitesData["workday"]["selectorMapping"][label_name.toLowerCase()]
     var value_to_look_for = ""
     if(typeof to_search !== "undefined"){ 
         value_to_look_for = autofillData[to_search]
     }
+
     found = 0 
     //if button is present, means we have a dropdown 
     if(typeof input_div !== "undefined" && input_div.getElementsByTagName("button").length > 0){ 
@@ -162,6 +163,7 @@ async function fill_workday(){
       options = document.getElementsByTagName('li')
       i = 0 
       while(i < options.length){
+        //if can match the option value to the value we are looking for
         if(value_to_look_for != "" && typeof value_to_look_for !== "undefined" && options[i].innerText !== "undefined"  && value_to_look_for.toLowerCase() == options[i].innerText.toLowerCase()){ 
           found = 1
           options[i].click()
@@ -180,6 +182,7 @@ async function fill_workday(){
       }
     }
   });
+  //ensure all drop down info is updated 
   await sleep(2000)
   //console.log("called new",$("div[data-automation-id*='formField']") )
   //this section is for the normal text input --> I have done it like this because when you do drop down more fields might be added
@@ -198,6 +201,7 @@ async function fill_workday(){
     if(typeof input_div !== "undefined" && input_div.querySelectorAll('input[type=text]').length > 0 ){ 
       if(value_to_look_for != "" && typeof value_to_look_for !== "undefined"){ 
         input_div.querySelector('input[type=text]').value = value_to_look_for
+        input_div.querySelector('input[type=text]').innerText = value_to_look_for
       }
     }
   });
