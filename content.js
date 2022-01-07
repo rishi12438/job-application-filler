@@ -288,29 +288,6 @@ async function fill_workday(){
   }
   
 
-  if(done_next == 0){ 
-    try{
-      document.getElementsByClassName('css-1r8ofxn')[0].addEventListener("click", function(){ 
-          console.log('next pressed')  
-          fill_workday()        
-          done_previous = 1
-      });
-    }  
-    catch(err){ 
-    }
-
-  }
-  if(done_previous == 0 ){ 
-    try{
-      document.getElementsByClassName('css-1coxel6')[0].addEventListener("click", function(){ 
-          console.log("prev pressed")
-          fill_workday()
-          done_previous = 1
-      });
-
-    }  
-    catch(err){ 
-    }
-  }
+  
 }
 
