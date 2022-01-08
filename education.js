@@ -27,7 +27,7 @@ function add_new_box(values) {
   var educationBox =
     `<div class = "overall_box">` +
     `<a class="btn btn-primary" id="collapse` +
-    current_value.toString() +
+    current_value.toString() + 
     `"
    data-toggle="collapse" style="margin-left: 20px; margin-top: 10px; margin-top: 10px; width: 250px;" href="#collapseExample0" role="button" aria-expanded="true" aria-controls="collapseExample0">Toggle this</a>` +
     `<div class="show" id="object` +
@@ -39,43 +39,45 @@ function add_new_box(values) {
 <div class="form-group">
   <label for="jobTitle">Job Title</label>
   <input type="text" class="form-control" id="jobTitle` +
-    current_value.toString() +
-    `"aria-describedby="emailHelp" placeholder="Enter job title">
+    current_value.toString() + `"value="` +
+    values["job_title"] +`"aria-describedby="emailHelp" placeholder="Enter job title">
 </div>
 
 <div class="form-group">
   <label for="companyName">Company Name</label>
   <input type="text" class="form-control" id="companyName` +
-    current_value.toString() +
-    `"aria-describedby="emailHelp" placeholder="Enter company name">
+    current_value.toString()  + `"value="` +
+    values["company"] +`"aria-describedby="emailHelp" placeholder="Enter company name">
 </div>
 
 <div class="form-group">
   <label for="jobSummary">Job Summary</label>
   <textarea class="form-control" id="jobSummary` +
-    current_value.toString() +
-    `"rows="3"></textarea>
+    current_value.toString()  + `"value="` +
+    values["summary"] +`"rows="3"> ` +
+    values["summary"] +`</textarea>
 </div>
 
 <div class="form-group">
   <label for="jobSummary">Job Location</label>
   <textarea class="form-control" id="jobLocation` +
-    current_value.toString() +
-    `"rows="3"></textarea>
+    current_value.toString() +  `"value="` +
+    values["location"] +
+    `"rows="3">`+ values["location"] +`</textarea>
 </div>
 
 <div class="form-group">
   <label for="workStartDate">Work Start Date</label>
   <input type="text" class="form-control" id="workStartDate` +
-    current_value.toString() +
-    `"aria-describedby="emailHelp" placeholder="Enter work start date">
+    current_value.toString() + `"value="` +
+    values["start_date"] + `"aria-describedby="emailHelp" placeholder="Enter work start date">
 </div>
 
 <div class="form-group">
   <label for="workEndDate">Work End Date</label>
   <input type="text" class="form-control" id="workEndDate` +
-    current_value.toString() +
-    `"aria-describedby="emailHelp" placeholder="Enter work end date">
+    current_value.toString() + `"value="` +
+    values["end_date"] +`"aria-describedby="emailHelp" placeholder="Enter work end date">
 </div>
 </div>
 </div></div>`;
@@ -269,31 +271,34 @@ document.addEventListener("DOMContentLoaded", function () {
 
     saveEducationBtn.addEventListener("click", function () {
       classes = document.getElementsByClassName("education_box");
+
       i = 0;
       education_exp = [];
       while (i < classes.length) {
+        console.log(classes[i])
         education_exp.push({});
         i++;
       }
       i = 0;
       while (i < classes.length) {
+        index_to = classes[i].id.replace("education_box","")
         education_exp[i]["job_title"] = document.getElementById(
-          "jobTitle" + i.toString()
+          "jobTitle" + index_to.toString()
         ).value;
         education_exp[i]["company"] = document.getElementById(
-          "companyName" + i.toString()
+          "companyName" + index_to.toString()
         ).value;
         education_exp[i]["location"] = document.getElementById(
-          "jobLocation" + i.toString()
+          "jobLocation" + index_to.toString()
         ).value;
         education_exp[i]["summary"] = document.getElementById(
-          "jobSummary" + i.toString()
+          "jobSummary" + index_to.toString()
         ).value;
         education_exp[i]["start_date"] = document.getElementById(
-          "workStartDate" + i.toString()
+          "workStartDate" + index_to.toString()
         ).value;
         education_exp[i]["end_date"] = document.getElementById(
-          "workEndDate" + i.toString()
+          "workEndDate" + index_to.toString()
         ).value;
         i++;
       }
