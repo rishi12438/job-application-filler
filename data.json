@@ -5,7 +5,7 @@
   "email": "johndoe@gmail.com",
   "phone": "95436543",
   "location": "singapore",
-  "postalCode":"482002",
+  "postalCode":"124439",
   "city": "Singapore",
   "extension": "+65",
   "phoneType": "mobile",
@@ -15,7 +15,7 @@
   "github": "https://github.com/x",
   "twitter": "https://twitter.com/x",
   "blog": "https://blog.x.com",
-  "school": "AIB College of Business",
+  "school": "4350860004",
   "discipline": "",
   "degree": "Bachelor's",
   "education_start_date_month": "",
@@ -29,10 +29,21 @@
   "employment_start_date_year": "",
   "employment_end_date_month": "",
   "employment_end_date_year": "",
+  "education": [
+    {
+      "school": "NUS",
+      "degree": "bachelors",
+      "major": "Computer Engineering",
+      "gpa": "4.9",
+      "from": "08-2017",
+      "to": "10-2020"
+    }
+  ],
   "work_experiences": [
     {
       "job_title": "Software Engineer",
       "company": "Tesla",
+      "location": "Silicon Valley",
       "summary": "i worked at tesla",
       "start_date": "12-2017",
       "end_date": "01-2018"
@@ -40,6 +51,7 @@
     {
       "job_title": "Data Engineer",
       "company": "Amazon",
+      "location": "Chicago",
       "summary": "i worked at amazon",
       "start_date": "12-2018",
       "end_date": "01-2019"

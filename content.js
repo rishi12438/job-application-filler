@@ -13,6 +13,7 @@ var fake_next_button;
 var fake_prev_button; 
 
 
+
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -55,6 +56,18 @@ Promise.all([
   init();
 })
 
+/*
+Promise.all([
+  sitesStream, 
+  readLocalStorage(),
+]).then(responses => {
+  autofillData = responses[1];
+  sitesData = responses[0];
+  current_page_value_map= responses[1]
+  console.log("ffkkk",current_page_value_map)
+  init();
+})
+*/
 /**
  * Checks if the hostname is supported.
  * Finds a standardized equivalent if there's no direct match.
@@ -220,11 +233,27 @@ async function fill_workday(save){
     })
 
     if(save == 1){ 
-      
+      Promise.all([
+         
+        readLocalStorage(),
+      ]).then(responses => {
+        current_page_value_map= responses[0]   
+        //autofillData = responses[0];    
+        console.log("done getting update val",current_page_value_map)
+      })
       actual_next_button.click()
     }     
     
-    else{ 
+    else
+    { 
+      Promise.all([
+         
+        readLocalStorage(),
+      ]).then(responses => {
+        current_page_value_map= responses[0]
+        console.log("done getting update val",current_page_value_map)
+      })
+
       actual_prev_button.click()
     }
 
@@ -254,6 +283,14 @@ async function fill_workday(save){
   //  return 
   //  }
   
+  var work_exp_count = {
+    job_title:  0,
+    company: 0,
+    location: 0,
+    summary: 0,
+    from: 0,
+    to: 0
+  }
   console.log("work experiences", autofillData.work_experiences)
   $("div[data-automation-id*='workExperienceSection']").each(async function(i,el) {
     var label_name = el.children[0].innerText.replace("*","")
@@ -262,12 +299,10 @@ async function fill_workday(save){
     for (var k = 0; k < autofillData.work_experiences.length; k++) {
       if (input_div.getElementsByTagName("button")[0].getAttribute("data-automation-id") != "panel-set-delete-button") {
         input_div.getElementsByTagName("button")[0].click()
-        console.log('creating')
       }
     }
     await sleep(1000)
     $("div[data-automation-id*='formField']").each(function (i, el) {
-      console.log('after')
       var label_name  = el.children[0].innerText.replace("*","");
       label_name = label_name.toLowerCase()
       //this is the second div that contains the input 
@@ -275,20 +310,27 @@ async function fill_workday(save){
       
       var to_search = sitesData["workday"]["selectorMapping"][label_name.toLowerCase()]
       var value_to_look_for = ""
-      console.log("bel",label_name)
+      // console.log("bel",label_name)
       if(typeof to_search !== "undefined" ){ 
           value_to_look_for = autofillData[to_search]
-          console.log('test work',label_name)
+          // console.log('test work',label_name)
           switch(label_name.toLowerCase() ) {
             case "job title":
               value_to_look_for = autofillData[to_search][work_exp_count.job_title]["job_title"]
-              console.log('job title',value_to_look_for)
               work_exp_count.job_title += 1  
               break
             case "company":
               value_to_look_for = autofillData[to_search][work_exp_count.company]["company"]
-              console.log(value_to_look_for)
               work_exp_count.company += 1
+              break
+            case "location":
+              value_to_look_for = autofillData[to_search][work_exp_count.location]["location"]
+              work_exp_count.location += 1
+              break
+            case "role description":
+              value_to_look_for = autofillData[to_search][work_exp_count.summary]["summary"]
+              document.querySelectorAll('[data-automation-id="description"]')[work_exp_count.summary].value = value_to_look_for
+              work_exp_count.summary += 1
               break
           }
           if(value_to_look_for != "" && typeof value_to_look_for !== "undefined"){ 
@@ -349,10 +391,118 @@ async function fill_workday(save){
         }
       })
     }
-
   })
 
-  
+  var education_count = {
+    school:  0,
+    degree: 0,
+    major: 0,
+    gpa: 0,
+    from: 0,
+    to: 0
+  }
+  console.log("education", autofillData.education)
+  $("div[data-automation-id*='educationSection']").each(async function(i,el) {
+    var label_name = el.children[0].innerText.replace("*","")
+    var input_div = el.children[1]
+
+    for (var k = 0; k < autofillData.education.length; k++) {
+      if (input_div.getElementsByTagName("button")[0].getAttribute("data-automation-id") != "panel-set-delete-button") {
+        input_div.getElementsByTagName("button")[0].click()
+      }
+    }
+    await sleep(1000)
+    $("div[data-automation-id*='formField']").each(async function (i, el) {
+      var label_name  = el.children[0].innerText.replace("*","");
+      label_name = label_name.toLowerCase()
+      //this is the second div that contains the input 
+      var input_div = el.children[1]    
+      
+      var to_search = sitesData["workday"]["selectorMapping"][label_name.toLowerCase()]
+      var value_to_look_for = ""
+
+      if(typeof to_search !== "undefined" ){ 
+          value_to_look_for = autofillData[to_search]
+          console.log('test education',label_name)
+          switch(label_name.toLowerCase() ) {
+            case "school or university":
+              value_to_look_for = autofillData[to_search][education_count.school]["school"]
+              $(input_div).find('input[type=text]').focus()
+              $(input_div).find('input[type=text]').val(value_to_look_for).change();
+              education_count.school += 1  
+              break
+            case "degree":
+              value_to_look_for = autofillData[to_search][education_count.degree]["degree"]
+              document.querySelectorAll('[data-automation-id="degree"]')[0].focus()
+              document.querySelectorAll('[data-automation-id="degree"]')[0].click()
+              var found = 0
+              console.log("looking for ", label_name)
+              try{
+                z_s = document.querySelectorAll('ul')
+                j = 0 
+                var z 
+                found_z = 0 
+                while(j<z_s.length){ 
+                  if(z_s[j].parentNode.hasAttribute('visibility') &&  z_s[j].getAttribute('role') == "listbox"){ 
+                    z = z_s[j]
+                    found_z = 1
+                  }
+                  j++
+                }
+                options = z.getElementsByTagName('li')
+                i = 0           
+                while(i < options.length){
+                  if(value_to_look_for != "" && typeof value_to_look_for !== "undefined" && options[i].innerText !== "undefined"  && options[i].innerText.toLowerCase().includes(value_to_look_for.toLowerCase())){ 
+                    found = 1
+                    options[i].click()
+                    changed = true
+                    break;
+                  }        
+                  //console.log(options[i].getAttribute('data-value'),options[i].innerText)
+                  i++
+                }
+              }
+              catch(err){ 
+                console.log("errorrr*OFOFOFOFOFO",err)
+              }
+              //close the dropdown 
+              if(found == 0){ 
+                if(typeof input_div !== "undefined" && input_div.querySelectorAll('button').length  > 0 && input_div.querySelectorAll('button')[0].hasAttribute('aria-expanded')){ 
+                  console.log("closing", input_div.querySelectorAll('button')[0])
+                  input_div.getElementsByTagName("button")[0].click()
+                }
+              }
+              education_count.degree += 1
+              break
+            // case "field of study":
+            //   value_to_look_for = autofillData[to_search][education_count.major]["major"]
+            //   document.querySelectorAll('[data-automation-id="multiselectInputContainer"]')[education_count.major].focus()
+            //   document.querySelectorAll('[data-automation-id="multiselectInputContainer"]')[education_count.major].click()
+            //   await sleep(1000)
+            //   const prompts = document.querySelectorAll('[data-automation-id="promptOption"]')
+            //   for (var a = 0; a < prompts.length; a++) {
+            //     if (prompts[a].innerText.toLowerCase() === value_to_look_for.toLowerCase()) {
+            //       prompts[a].focus()
+            //       prompts[a].click()
+            //       break
+            //     }
+            //   }
+            //   education_count.major += 1  
+            //   break
+            case "overall result (gpa)":
+              value_to_look_for = autofillData[to_search][education_count.gpa]["gpa"]
+              $(input_div).find('input[type=text]').focus()
+              $(input_div).find('input[type=text]').val(value_to_look_for).change();
+              education_count.gpa += 1
+              break
+          }
+          // if(value_to_look_for != "" && typeof value_to_look_for !== "undefined"){ 
+            
+          //   //$(input_div).find('input[type=text]').focus()
+          // }
+      }
+    })
+  })
 
   lastknown_title = document.getElementsByClassName("css-1j9bnzb")[0].innerText
   changed = false 
@@ -367,7 +517,7 @@ async function fill_workday(save){
       if(typeof to_search !== "undefined"){ 
           value_to_look_for = autofillData[to_search]
       }
-      if( typeof current_page_value_map[label_name] !== "undefined" && current_page_value_map[label_name] != "" ){ 
+      if( typeof current_page_value_map[label_name] !== "undefined" && current_page_value_map[label_name] != "" ){         
         value_to_look_for = current_page_value_map[label_name]
       }
 
@@ -431,12 +581,6 @@ async function fill_workday(save){
   }
    //console.log("called new",$("div[data-automation-id*='formField']") )
   //this section is for the normal text input --> I have done it like this because when you do drop down more fields might be added
-  var work_exp_count = {
-    job_title:  0,
-    company: 0,
-    from: 0,
-    to: 0
-  }
   $("div[data-automation-id*='formField']").each(function (i, el) {
     var label_name  = el.children[0].innerText.replace("*","");
     label_name = label_name.toLowerCase()
@@ -497,6 +641,7 @@ async function fill_workday(save){
     if(value_to_look_for != "" && typeof value_to_look_for !== "undefined"){ 
       $(input_div).find('input[type=text]').focus()
       $(input_div).find('input[type=text]').val(value_to_look_for).change();
+      $(input_div).find('input[type=text]').focus()
     }
   }   
 
