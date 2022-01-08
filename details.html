@@ -1,0 +1,52 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <style>
+            body {
+                height: 450px;
+                width: 300px;
+                background: yellowgreen;
+                font-family: sans-serif;
+            }
+            .flex_container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            .options {
+                display: flex;
+                justify-content: center;
+                padding: 10px;
+                margin: 10px;
+                text-align: center;
+                cursor: pointer;
+                background-color: rgb(47, 189, 47);
+                width: 200px;
+            }
+
+            #logo {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                object-fit: contain;
+                width: 200px;
+            }
+        </style>
+    </head>
+
+    <body style="background-image: url('bg.png');">
+        <div class="flex_container">
+            <div style="height: 30px;"> </div>
+            <div id="logo">
+                <img src="4a6244fc750a4c3eb45b87f794af5f4b.png">
+            </div>
+            <div style="height: 10px;"> </div>
+
+            <a href="./personal_details.html" class="btn btn-info options">Personal Details</a>
+            <a href="./education.html" class="btn btn-info options">Work Experience</a>
+            <a href="./details.html" class="btn btn-info options">Other Info</a>
+            <div style="height: 20px;"> </div>
+        </div>
+    
+    </body>
+</html>
