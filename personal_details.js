@@ -7,6 +7,99 @@ document.addEventListener("DOMContentLoaded", function () {
     if (result.lastName != undefined) {
       document.getElementById("lastName").value = result.lastName;
     }
+    if (result.fullName != undefined) {
+      document.getElementById("fullName").value = result.fullName;
+    }
+    if (result.email != undefined) {
+      document.getElementById("email").value = result.email;
+    }
+    if (result.phone != undefined) {
+      document.getElementById("phoneNumber").value = result.phone;
+    }
+    if (result.location != undefined) {
+      document.getElementById("location").value = result.location;
+    }
+    if (result.postalCode != undefined) {
+      document.getElementById("postalCode").value = result.postalCode;
+    }
+    if (result.city != undefined) {
+      document.getElementById("city").value = result.city;
+    }
+    if (result.extension != undefined) {
+      document.getElementById("extension").value = result.extension;
+    }
+    if (result.phoneType != undefined) {
+      document.getElementById("phoneType").value = result.phoneType;
+    }
+    if (result.currentCompany != undefined) {
+      document.getElementById("currentCompany").value = result.currentCompany;
+    }
+    if (result.website != undefined) {
+      document.getElementById("personalWebsite").value = result.website;
+    }
+    if (result.linkedin != undefined) {
+      document.getElementById("linkedin").value = result.linkedin;
+    }
+    if (result.github != undefined) {
+      document.getElementById("github").value = result.github;
+    }
+    if (result.twitter != undefined) {
+      document.getElementById("twitter").value = result.github;
+    }
+    if (result.blog != undefined) {
+      document.getElementById("blog").value = result.blog;
+    }
+    if (result.school != undefined) {
+      document.getElementById("school").value = result.school;
+    }
+    if (result.discipline != undefined) {
+      document.getElementById("discipline").value = result.discipline;
+    }
+    if (result.degree != undefined) {
+      document.getElementById("degree").value = result.degree;
+    }
+    if (result.education_start_date_month != undefined) {
+      document.getElementById("educationStartMonth").value =
+        result.education_start_date_month;
+    }
+    if (result.education_start_date_year != undefined) {
+      document.getElementById("educationStartYear").value =
+        result.education_start_date_year;
+    }
+    if (result.education_end_date_month != undefined) {
+      document.getElementById("educationEndMonth").value =
+        result.education_end_date_month;
+    }
+    if (result.education_end_date_year != undefined) {
+      document.getElementById("educationEndYear").value =
+        result.education_end_date_year;
+    }
+    if (result.company_name != undefined) {
+      document.getElementById("currentCompanyName").value = result.company_name;
+    }
+    if (result.company_name != undefined) {
+      document.getElementById("currentCompanyName").value = result.company_name;
+    }
+    if (result.employment_title != undefined) {
+      document.getElementById("employmentTitle").value =
+        result.employment_title;
+    }
+    if (result.employment_start_date_month != undefined) {
+      document.getElementById("employmentStartMonth").value =
+        result.employment_start_date_month;
+    }
+    if (result.employment_start_date_year != undefined) {
+      document.getElementById("employmentStartYear").value =
+        result.employment_start_date_year;
+    }
+    if (result.employment_end_date_month != undefined) {
+      document.getElementById("employmentEndMonth").value =
+        result.employment_end_date_month;
+    }
+    if (result.employment_end_date_year != undefined) {
+      document.getElementById("employmentEndYear").value =
+        result.employment_end_date_year;
+    }
   });
 
   document.getElementById("saveButton").addEventListener("click", function () {
@@ -218,32 +311,6 @@ document.addEventListener("DOMContentLoaded", function () {
           console.log("saving", education_end_date_year);
         }
       );
-    }
-
-    var education_end_date_year =
-      document.getElementById("educationEndYear").value;
-    if (
-      education_end_date_year != undefined &&
-      education_end_date_year != null &&
-      education_end_date_year != ""
-    ) {
-      chrome.storage.local.set(
-        { ["education_end_date_year"]: education_end_date_year },
-        function () {
-          console.log("saving", education_end_date_year);
-        }
-      );
-    }
-
-    var company_name = document.getElementById("currentCompanyName").value;
-    if (
-      company_name != undefined &&
-      company_name != null &&
-      company_name != ""
-    ) {
-      chrome.storage.local.set({ ["company_name"]: company_name }, function () {
-        console.log("saving", company_name);
-      });
     }
 
     var company_name = document.getElementById("currentCompanyName").value;

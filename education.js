@@ -28,12 +28,12 @@ function add_new_box(values){
   
     <div class="form-group">
         <label for="jobSummary">Job Summary</label>
-        <textarea class="form-control" id="jobSummary`+ current_value.toString()+  `"value="`+ values["summary"] +`"rows="3"></textarea>
+        <textarea class="form-control" id="jobSummary`+ current_value.toString()+  `"value="`+ values["summary"] +`"rows="3">`+ values["summary"] +`</textarea>
     </div>
   
     <div class="form-group">
         <label for="jobSummary">Job Location</label>
-        <textarea class="form-control" id="jobLocation`+ current_value.toString()+  `"value="`+ values["location"] +`"rows="3"></textarea>
+        <textarea class="form-control" id="jobLocation`+ current_value.toString()+  `"value="`+ values["location"] +`"rows="3">`+ values["location"] +`</textarea>
     </div>
   
     <div class="form-group">
