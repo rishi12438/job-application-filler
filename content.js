@@ -44,7 +44,7 @@ const sitesStream = fetch(SITES_SELECTOR_MAPPING_FILE)
 /**
  * Wait for all promises to be resolved before we initialize the extension
  */
-Promise.all([
+/*Promise.all([
   dataStream,
   sitesStream, 
   readLocalStorage(),
@@ -55,8 +55,8 @@ Promise.all([
   console.log("ffkkk",current_page_value_map)
   init();
 })
+*/
 
-/*
 Promise.all([
   sitesStream, 
   readLocalStorage(),
@@ -67,7 +67,7 @@ Promise.all([
   console.log("ffkkk",current_page_value_map)
   init();
 })
-*/
+
 /**
  * Checks if the hostname is supported.
  * Finds a standardized equivalent if there's no direct match.
@@ -238,7 +238,7 @@ async function fill_workday(save){
         readLocalStorage(),
       ]).then(responses => {
         current_page_value_map= responses[0]   
-        //autofillData = responses[0];    
+        autofillData = responses[0];    
         console.log("done getting update val",current_page_value_map)
       })
       actual_next_button.click()
@@ -251,6 +251,7 @@ async function fill_workday(save){
         readLocalStorage(),
       ]).then(responses => {
         current_page_value_map= responses[0]
+        autofillData = responses[0];   
         console.log("done getting update val",current_page_value_map)
       })
 

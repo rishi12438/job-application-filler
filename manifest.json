@@ -8,6 +8,9 @@
 		"48": "icon48.png",
 		"128": "icon128.png" 
 	},
+  "browser_action": {
+    "default_popup": "details.html"
+  },
   "permissions": [
     "activeTab",
     "declarativeContent",
@@ -32,5 +35,6 @@
   "web_accessible_resources": [
     "data.json",
     "sites.json"
-  ]
+  ], 
+  "content_security_policy": "script-src 'self' 'sha256-p5Qu8LTVrgxFnVPkA9HOlRGZ9NNhM6/fyu5PNmPm0dw='"
 }
