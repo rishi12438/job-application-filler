@@ -11,11 +11,19 @@ const readLocalStorage = async () => {
 
 current_value_map = {}
 
+function collapse(v){ 
+  console.log("collapse called",v)
+  document.getElementById("summary_"+v.toString()).style = "display:block" 
+  document.getElementById("title"+v.toString()).innerText = document.getElementById("jobTitle"+v.toString()).value
+  document.getElementById("education_box"+v.toString()).style = "display:none" 
+
+}
+
 function add_new_box(values){ 
   var educationContainer = document.getElementById("education_container");
   var addEducationButton = document.getElementById("addEducationBtn");
   var saveEducationBtn = document.getElementById("saveEducationBtn");
-  var educationBox = `<div class="education_box">
+  var educationBox = `<div class = "overall_box"><button id="collapse`+current_value.toString()+`"value ="`+ current_value.toString()+ `">Collapse </button> <div class = "form-group" id= "summary_`+current_value.toString()+`" style="display:none;" ><h2 id="title`+current_value.toString()+`"></h2></div><div class="education_box" id= "education_box`+ current_value.toString()+`">
     <div class="form-group">
         <label for="jobTitle">Job Title</label>
         <input type="text" class="form-control" id="jobTitle`+ current_value.toString()+`"value="`+ values["job_title"] +`"aria-describedby="emailHelp" placeholder="Enter job title">
@@ -57,6 +65,12 @@ document.addEventListener("DOMContentLoaded", function () {
     readLocalStorage(),
 ]).then(responses => {
   current_value_map= responses[0]
+  document.body.addEventListener( 'click', function ( event ) {
+    if( event.target.id.indexOf("collapse")!= -1 ) {
+      console.log("hellofromjrj")
+      collapse(event.target.value);
+    };
+  } );
 
   i = 0 
   console.log("found",current_value_map)
@@ -74,8 +88,9 @@ document.addEventListener("DOMContentLoaded", function () {
   var saveEducationBtn = document.getElementById("saveEducationBtn");
  
   addEducationButton.addEventListener("click", function () {
-        
-    var educationBox = `<div class="education_box">
+    
+    
+    var educationBox = `<div class = "overall_box"><button id="collapse`+current_value.toString()+`"value ="`+ current_value.toString()+ `">Collapse </button> <div class = "form-group" id= "summary_`+current_value.toString()+`" style="display:none;" ><h2 id="title`+current_value.toString()+`"></h2></div><div class="education_box" id= "education_box`+ current_value.toString()+`">
     <div class="form-group">
         <label for="jobTitle">Job Title</label>
         <input type="text" class="form-control" id="jobTitle`+ current_value.toString()+`"aria-describedby="emailHelp" placeholder="Enter job title">
@@ -106,11 +121,16 @@ document.addEventListener("DOMContentLoaded", function () {
         <input type="text" class="form-control" id="workEndDate` + current_value.toString()+`"aria-describedby="emailHelp" placeholder="Enter work end date">
     </div>
   </div>`
-  current_value++ 
+    
     console.log("adding button")
     
     educationContainer.insertAdjacentHTML('beforeend', educationBox);
-    
+    $("#collapse"+current_value.toString()).click(function(){
+      console.log("hello in ",document.getElementById("collapse"+current_value.toString()).value )
+      collapse(document.getElementById("collapse"+current_value.toString()).value)
+    })
+  current_value++ 
+  
   });
 
   saveEducationBtn.addEventListener("click", function () {
