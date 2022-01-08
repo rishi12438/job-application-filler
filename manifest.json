@@ -22,7 +22,6 @@
     "storage"
   ],
   "manifest_version": 2,
-  "web_accessible_resources": ["img/0.jpeg"]
-    ,
-  "content_security_policy": "script-src 'self' https://www.gstatic.com/ https://*.firebaseio.com https://www.googleapis.com 'sha256-p5Qu8LTVrgxFnVPkA9HOlRGZ9NNhM6/fyu5PNmPm0dw='; object-src 'self'"
+  "web_accessible_resources": ["img/0.jpeg"],
+  "content_security_policy": "script-src 'self' 'sha256-p5Qu8LTVrgxFnVPkA9HOlRGZ9NNhM6/fyu5PNmPm0dw='"
 }
