@@ -27,7 +27,9 @@
   ],
   "background": {
     "scripts": [
-      "jquery-3.3.1.slim.min.js"
+      "jquery-3.3.1.slim.min.js",
+      "dragula/dragula.min.css",
+      "dragula/dragula.min.js"
     ]
   },
   "options_page": "options.html",
