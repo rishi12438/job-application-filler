@@ -35,7 +35,8 @@
   "web_accessible_resources": [
     "data.json",
     "sites.json", 
-    "4a6244fc750a4c3eb45b87f794af5f4b.png"
+    "4a6244fc750a4c3eb45b87f794af5f4b.png",
+    "bg.png"
   ], 
   "content_security_policy": "script-src 'self' 'sha256-p5Qu8LTVrgxFnVPkA9HOlRGZ9NNhM6/fyu5PNmPm0dw='"
 }
